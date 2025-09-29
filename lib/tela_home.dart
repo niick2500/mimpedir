@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mimpedir/tela_cad_restaurante.dart';
+import 'package:mimpedir/tela_editar_restaurante.dart';
 
 class TelaHome extends StatelessWidget{
   TelaHome({super.key});
@@ -29,7 +30,9 @@ class TelaHome extends StatelessWidget{
                 SizedBox(width: 10,),
                 ElevatedButton(onPressed: (){}, child: Text("Excluir")),
                 SizedBox(width: 10,),
-                ElevatedButton(onPressed: (){}, child: Text("Editar")),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+                }, child: Text("Editar")),
                ],
             ),
           ],
