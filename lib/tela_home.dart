@@ -21,7 +21,7 @@ void initState(){
 
 
   Future<void> carregarRestaurantes() async{
-    final lista = await RestauranteDAO.listarTodos()
+    final lista = await RestauranteDAO.listarTodos();
         setState(() {
           restaurantes = lista;
         });
@@ -32,11 +32,17 @@ void initState(){
     return Scaffold(
       appBar: AppBar(title: const Text('Lista de Restaurantes'),
         actions: [
-          IconButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+          TextButton(
+              onPressed: () async{
+                final t = Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+                if(t == false || t == null){
+                   setState(() {
+                     carregarRestaurantes();
+                   });
+                }
           },
-          icon: Icon(Icons.add)
+          child: Icon(Icons.add)
           )
         ],
       ),
