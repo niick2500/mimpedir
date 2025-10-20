@@ -4,13 +4,13 @@ import 'package:mimpedir/banco/restaurante_DAO.dart';
     import 'package:mimpedir/tipo.dart';
 
     class TelaCadRestaurante extends StatefulWidget{
-  @override
-  State<StatefulWidget> createState() {
-  return TelaCadRestauranteState();
-  }
-}
+      @override
+      State<StatefulWidget> createState() {
+      return TelaCadRestauranteState();
+      }
+      }
 
-    class TelaCadRestauranteState extends State<TelaCadRestaurante>{
+      class TelaCadRestauranteState extends State<TelaCadRestaurante>{
 
       final TextEditingController nomeController = TextEditingController();
       final TextEditingController latitudeController = TextEditingController();
@@ -20,15 +20,15 @@ import 'package:mimpedir/banco/restaurante_DAO.dart';
       int? tipoCulinaria;
 
       void initState(){
-        super.initState();
-        carregarTipos();
+      super.initState();
+      carregarTipos();
       }
 
       Future<void> carregarTipos() async{
-        final lista = await TipoDAO.listarTipos();
-        setState(() {
-          tiposCulinaria = lista;
-        });
+      final lista = await TipoDAO.listarTipos();
+      setState(() {
+      tiposCulinaria = lista;
+      });
       }
 
       @override

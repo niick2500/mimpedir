@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mimpedir/banco/restaurante_DAO.dart';
 import 'package:mimpedir/tela_cad_restaurante.dart';
 import 'package:mimpedir/tela_editar_restaurante.dart';
+import 'package:mimpedir/restaurante.dart';
 
 class TelaHome extends StatefulWidget {
   TelaHome({super.key});
@@ -61,12 +62,17 @@ void initState(){
                   children: [
                     IconButton(onPressed: (){
                       Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
-                    },icon: Icon(Icons.edit, color: Colors.blue)),
-                    IconButton(onPressed: (){}, icon: Icon(Icons.delete, color: Colors.red,)),
-                  ],
+                    },icon: Icon(Icons.edit, color: Colors.blue)
+                    onPressed: async() {
+                    TelaEditarRestaurante.restaurante = r;
+                    }, icon: Icon(icons.delete, color: Colors.blue),
+                    IconButton:(onPressed: () {
+                  }
                 ),
-              ),
-            );
+               )
+              ],
+              );
+            )
           },
         )
       ),
