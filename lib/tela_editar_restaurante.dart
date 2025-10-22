@@ -2,39 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:mimpedir/restaurante.dart';
 import 'package:mimpedir/tipo.dart';
 import 'package:mimpedir/banco/tipo_DAO.dart';
-class TelaEditarRestaurante extends StatelessWidget{
+
+
+class TelaEditarRestaurante extends StatefulWidget {
   static Restaurante restaurante = Restaurante();
 
   @override
   State<StatefulWidget> createState() {
-    return TelaEditarRestaurante();
+    return TelaEditarRestauranteState();
   }
+}
 
-  class TelaEditarRestaurante extends State<TelaEditarRestaurante>{
+
+  class TelaEditarRestauranteState extends State<TelaEditarRestaurante>{
 
     final TextEditingController cdController = TextEditingController();
     final TextEditingController nomeController = TextEditingController();
-    final TextEditingController latitudeContoller = TextEditingController();
+    final TextEditingController latitudeController = TextEditingController();
     final TextEditingController longitudeController = TextEditingController();
     String? culinariaSelecionada;
-    List<Tipo> tipoCulinaria = [];
+    List<Tipo> tiposCulinaria = [];
     int? tipoCulinaria;
-    int? codigo = TelaEditarRestaurante.restaurante.codigo as int;
+    int? codigo = TelaEditarRestaurante.restaurante.codigo;
 
     void initState(){
       super.initState();
       carregarTipos();
       cdController.text = TelaEditarRestaurante.restaurante.codigo.toString()!;
       nomeController.text = TelaEditarRestaurante.restaurante.nome!;
-      latitudeContoller.text = TelaEditarRestaurante.restaurante.latitude;
-      longitudeController.text = TelaEditarRestaurante.restaurante.longitude;
-      tipoCulinariaController.text = TelaEditarRestaurante.restaurante.tipoCulinaria?.codigo!;
-      culinariaSelecionada.text = TelaEditarRestaurante.restaurante.culinaria?.descricao;
+      latitudeController.text = TelaEditarRestaurante.restaurante.latitude!;
+      longitudeController.text = TelaEditarRestaurante.restaurante.longitude!;
+      tipoCulinaria = TelaEditarRestaurante.restaurante.tipoCulinaria?.codigo!;
+      culinariaSelecionada = TelaEditarRestaurante.restaurante.tipoCulinaria?.descricao!;
     }
     Future<void> carregarTipos() async{
+    final lista = await TipoDAO.listarTipos();
+    setState(() {
+      tiposCulinaria = lista;
+    });
+  }
 
-  }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +68,14 @@ class TelaEditarRestaurante extends StatelessWidget{
            Text("Tipo de comida: "),
            DropdownButtonFormField<String>(
               value: culinariaSelecionada,
-               items: tipoCulinaria.map((tipo)
-                  return DropdownMenuItem<String>(
-                 value: tipo.descricao,
-                 child: Text('"${tipo.descricao}')
-               );
-
-                 DropdownMenuItem(value: "Japonesa", child: Text("Japonesa")),
-                 DropdownMenuItem(value: "Italiana", child: Text("Italiana")),
-                 DropdownMenuItem(value: "Brasileira", child: Text("Brasileira")),
-               onChanged: (value){}),
+               items: tiposCulinaria.map((tipo) {
+                 return DropdownMenuItem<String>(
+                     value: tipo.descricao,
+                     child: Text("${tipo.descricao}"),
+                 );
+               }).toList(),
+              onChanged: (value) {}
+           ),
            TextFormField(
              decoration: const InputDecoration(hintText: 'Latitude'),
              validator:(String? value) {},
@@ -86,7 +91,8 @@ class TelaEditarRestaurante extends StatelessWidget{
                Icon(Icons.save),
                Text("Salvar Alterações")
              ],
-           ))
+           )
+           )
          ],
        ),
      ),

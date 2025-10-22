@@ -36,7 +36,7 @@ void initState(){
           TextButton(
               onPressed: () async{
                 final t = Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+                    MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
                 if(t == false || t == null){
                    setState(() {
                      carregarRestaurantes();
@@ -60,25 +60,52 @@ void initState(){
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    IconButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
-                    },icon: Icon(Icons.edit, color: Colors.blue)
-                    onPressed: async() {
-                    TelaEditarRestaurante.restaurante = r;
-                    }, icon: Icon(icons.delete, color: Colors.blue),
-                    IconButton:(onPressed: () {
-                  }
+                    IconButton(
+                      icon: const Icon(Icons.edit,color: Colors.blue),
+                      onPressed: () async{
+                        TelaEditarRestaurante.restaurante = await RestauranteDAO.listar(r.codigo);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+                      },
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                          title: Text('ATENÇÂO!'),
+                          content: Text('Confirmar exclusão?'),
+                          actions: [
+                            TextButton(onPressed: (){
+                              Navigator.pop(context);
+                           },child: Text('cancelar')),
+                            TextButton(onPressed: (){
+                              RestauranteDAO.excluir(r);
+                              setState(() {
+                                carregarRestaurantes();
+                              });
+                              Navigator.pop(context);
+                              },child: Text('sim')),
+                              ],
+                            )
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-               )
-              ],
-              );
-            )
+          );
           },
         )
       ),
       floatingActionButton: FloatingActionButton(
           onPressed: (){
-            Navigator.push(context, MaterialPageRoute(builder: (context) => TelaEditarRestaurante()));
+            final t = Navigator.push(context, MaterialPageRoute(builder: (context) => TelaCadRestaurante()));
+            if(t == false || t == null){
+              setState(() {
+                carregarRestaurantes();
+              });
+            }
           },
           child: Icon(Icons.add),
       ),

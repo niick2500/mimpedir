@@ -7,7 +7,7 @@
         static Usuario usuarioLogado = Usuario();
 
         static Future<bool> autenticar (String login, String senha) async{
-          final db = await DatabaseHelper.getDsataBase();
+          final db = await DatabaseHelper.getDataBase();
 
           final resultado = await db.query(
             'tb_usuario',

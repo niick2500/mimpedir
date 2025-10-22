@@ -10,8 +10,8 @@ import 'package:mimpedir/restaurante.dart';
 class RestauranteDAO{
 
   static Future<void> Atualizar(int? cd, String? nome, String? lat, String? long, int? tipo) async{
-    final db = await DatabaseHelper.getDsataBase();
-    final resultado = await db.update('tb_restaurante'),
+    final db = await DatabaseHelper.getDataBase();
+    final resultado = await db.update('tb_restaurante',
     {
       'nm_restaurante': nome,
       '_latitude_restaurante': lat,
@@ -19,12 +19,12 @@ class RestauranteDAO{
       'cd_tipo': tipo
     },
       where: 'cd_restaurante = ?',
-      shereArgs: [cd]
+      whereArgs: [cd]
     );
   }
 
   static Future<Restaurante> listar(int? cd) async{
-    final db = await DatabaseHelper.getDsataBase();
+    final db = await DatabaseHelper.getDataBase();
     final resultado = await db.query('tb_restaurante',
       where: 'cd_restaurante = ?',
       whereArgs: [cd]
@@ -34,20 +34,19 @@ class RestauranteDAO{
       nome: resultado.first['nm_restaurante'] as String,
       latitude: resultado.first['latitude_restaurante'] as String,
       longitude: resultado.first['longitude_restaurante'] as String,
-      proprietario: resultado.first['propritario_restaurante'] as String,
-      tipoCulinaria: TipoDAO.listar(cd) as int
+      tipoCulinaria: await TipoDAO.listar(resultado.first['cd_tipo'] as int) as Tipo
     );
   }
 
-  static Future<void> excluir(Restaurante r ) async {
-    final db = await DatabaseHelper.getDsataBase();
+  static Future<void> excluir(Restaurante r ) async{
+    final db = await DatabaseHelper.getDataBase();
     final resultado = db.delete('tb_restaurante',
         where: 'cd_restaurante = ?',
         whereArgs: [r.codigo]
     );
   }
    static Future<List<Restaurante>> listarTodos() async{
-    final db = await DatabaseHelper.getDsataBase();
+    final db = await DatabaseHelper.getDataBase();
     final resultado = await db.query('tb_restaurante',
         where: 'cd_usuario = ?',
         whereArgs: [UsuarioDAO.usuarioLogado.codigo]
@@ -64,7 +63,7 @@ class RestauranteDAO{
   static Future<int> cadastrarRestaurante(
       String? nome, String? latitude, String? longitude, int? tipo
       ) async{
-    final db = await DatabaseHelper.getDsataBase();
+    final db = await DatabaseHelper.getDataBase();
 
     final dadosRestaurante = {
       'nm_restaurante': nome,

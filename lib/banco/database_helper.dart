@@ -8,7 +8,7 @@ class DatabaseHelper{
   static final _nomeBanco = 'Solucao_Completa.db';
   static Database? _db;
 
-  static Future<Database> getDsataBase() async{
+  static Future<Database> getDataBase() async{
     if(_db != null) return _db!;
 
     Directory pastabanco = await getApplicationDocumentsDirectory();
